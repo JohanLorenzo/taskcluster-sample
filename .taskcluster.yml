@@ -7,10 +7,10 @@ tasks:
         # We're going to reuse this value several times, so we store it in a variable
         buildTaskId: {$eval: as_slugid("build_task")}
     in:
-        - provisionerId: aws-provisioner-v1     # Uses mozilla's default
-          # github-worker is supplied by the provisioner defined above.
+        - provisionerId: proj-misc     # Uses Taskcluster's default instance
+          # The tutorial tutorial is supplied by the provisioner defined above.
           # It loads any docker images.
-          workerType: github-worker
+          workerType: tutorial
           # We explicitly set the taskId so the test task knows what to wait on
           taskId: ${buildTaskId}
           # After this deadline, the task will be considered as in exception, no matter
@@ -44,8 +44,8 @@ tasks:
             source: ${event.repository.url}
         - dependencies:
             - ${buildTaskId}    # This task will only start if the build task succeeded
-          provisionerId: aws-provisioner-v1
-          workerType: github-worker
+          provisionerId: proj-misc
+          workerType: tutorial
           deadline: {$fromNow: '2 hours'}
           payload:
             image: 'ubuntu:latest'
